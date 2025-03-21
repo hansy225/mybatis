@@ -35,6 +35,13 @@
 	.menu:hover {
 		background-color: magenta;
 	}
+	.outer {
+		text-align: center;
+	}
+	.outer table tr {
+		text-align: left;
+		height: 30px;
+	}
 </style>
 </head>
 <body>
@@ -56,7 +63,7 @@
 						</tr>
 						<tr>
 							<td colspan="3" align="center">
-								<a href="">회원가입 |</a>
+								<a href="enrollForm.me">회원가입 |</a>
 								<a href=""> 아이디/비밀번호 찾기</a>
 							</td>
 						</tr>
