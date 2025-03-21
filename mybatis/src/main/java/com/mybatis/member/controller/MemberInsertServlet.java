@@ -26,11 +26,10 @@ public class MemberInsertServlet extends HttpServlet {
 		
 		int result = new MemberServiceImpl().insertMember(m);
 		
-		if(result > 0) {
-			response.sendRedirect(request.getAsyncContext());
-		} else {
-			request.setAttribute("errorMsg", "");
-		}
+		/*
+		 * if(result > 0) { response.sendRedirect(request.getAsyncContext()); } else {
+		 * request.setAttribute("errorMsg", ""); }
+		 */
 	}
 
 }
