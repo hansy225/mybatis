@@ -74,5 +74,5 @@ public class Reply {
 		return "Reply [replyNo=" + replyNo + ", replyContent=" + replyContent + ", refBno=" + refBno + ", replyWriter="
 				+ replyWriter + ", createDate=" + createDate + ", status=" + status + "]";
 	}
-
+	
 }

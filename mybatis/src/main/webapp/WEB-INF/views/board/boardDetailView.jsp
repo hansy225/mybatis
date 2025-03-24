@@ -1,70 +1,135 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-	#list-area {
+	.outer table {
 		border: 1px solid;
 		border-collapse: collapse;
 	}
-	#list-area tr, #list-area th, #list-area td {
+	.outer tr, .outer td {
 		border: 1px solid;
-	}
-	.outer a {
-		text-decoration: none;
-		color : black;
 	}
 </style>
 </head>
 <body>
 	<jsp:include page="../common/menubar.jsp" />
 	<div class="outer">
-		<h2>게 시 판</h2>
+		<h2>게시판 상세보기</h2>
 		
-		<div id="search-area">
-		
-		</div>
-		
-		<table id="list-area" align="center">
-			<thead>
-				<tr>
-					<th>글번호</th>
-					<th width="300">제목</th>
-					<th>작성자</th>
-					<th>조회수</th>
-					<th>작성일</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="b" items="${ list }">
+		<table align="center">
+			<tr>
+				<td width="100px;">글번호</td>
+				<td width="400px;">${b.boardNo}</td>
+			</tr>
+			<tr>
+				<td>제목</td>
+				<td>${b.boardTitle}</td>
+			</tr>
+			<tr>
+				<td>작성자</td>
+				<td>${b.boardWriter}</td>
+			</tr>
+			<tr>
+				<td>조회수</td>
+				<td>${b.count}</td>
+			</tr>
+			<tr>
+				<td>작성일</td>
+				<td>${b.createDate}</td>
+			</tr>
+			<tr>
+				<td>내용</td>
+				<td>${b.boardContent}</td>
+			</tr>
+		</table>
+		<br>
+		<table align="center">
+			<c:choose>
+				<c:when test="${ empty loginUser }">
 					<tr>
-						<td>${ b.boardNo }</td>
-						<td><a href="detail.bo?bno=${ b.boardNo }">${ b.boardTitle }</a></td>
-						<td>${ b.boardWriter }</td>
-						<td>${ b.count }</td>
-						<td>${ b.createDate }</td>
+						<th>댓글작성</th>
+						<th><textarea rows="3" cols="51" readonly>로그인 후 이용가능한 서비스입니다.</textarea></th>
+						<th><input type="button" value="댓글 작성" disabled></th>
+					</tr>
+					</c:when>
+				<c:otherwise>
+					<form id="rFrm">
+						<tr>
+							<td>댓글작성</td>
+							<td><textarea rows="3" cols="51" id="content"></textarea></td>
+							<td><input type="button" value="댓글 작성" id="replyInsert"></td>
+							<input type="hidden" name="bno" value="${ b.boardNo }">
+							<input type="hidden" name="writer" value="${ loginUser.uwerId }">
+							
+						</tr>
+					</form>
+				</c:otherwise>
+			</c:choose>
+			<tr>
+				<td colspan="3" style="text-align:center">댓글 : ${reply.size()}</td>
+			</tr>
+			<tbody id="replyList">
+				<c:forEach var="r" items="${reply}">
+					<tr>
+						<td>${r.replyWriter}</td>
+						<td>${r.replyContent}</td>
+						<td>${r.createDate}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
-		
-		<div id="paging-area">
-			<c:if test="${ pi.nowPage ne 1 }">
-				<a href="list.bo?nowPage=${ pi.nowPage-1 }">[이전]</a>
-			</c:if>
-			
-			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-				<a href="list.bo?nowPage=${p}">[${p}]</a>
-			</c:forEach>
-			
-			<c:if test="${ pi.nowPage ne totalPage }">
-				<a href="list.bo?nowPage=${ pi.nowPage+1 }">[다음]</a>
-			</c:if>
-		</div>
 	</div>
+	
+	<script>
+		$(() => {
+			$('#replyInsert').click(function() {
+				// serialize() : 폼 안의 input, select, textarea 등의 value의 값을 간단하게 표준 url 인코딩 형태 문자열로 만들어줌
+				// content=내용 & id=값 & writer=값 ...
+				let rdata = $('#rFrm').serialize();
+				$.ajax({
+					url : 'rinsert.bo',
+					data : rdata,
+					type : post,
+					success : function(result) {
+						console.log(result);
+						if(result > 0) {
+							replyList();
+						}
+					},
+					error : function() {
+						console.log("댓글달기 통신 실패");
+					}
+				})
+			})
+			function replyList() {
+				$.ajax({
+					url : "detail.bo",
+					data : {bno : ${b.boardNo}},
+					type : "post",
+					success : function(result) {
+						console.log(result);
+						let list = "";
+						$.each(result, function(index, value) {
+							list += "<tr>"
+									+"<td>"+ value.replyWriter +"</td>"
+									+"<td>"+ value.replyContent +"</td>"
+									+"<td>"+ value.createDate +"</td>"
+									+"</tr>";
+						})
+						$('#replyList').html(list);
+					},
+					error : function() {
+						console.log("댓글 등록 후 리스트 목록 통신 실패");
+					}
+				})
+			}
+		})
+	</script>
 </body>
 </html>
