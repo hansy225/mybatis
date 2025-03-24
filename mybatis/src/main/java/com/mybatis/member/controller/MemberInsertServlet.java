@@ -26,10 +26,12 @@ public class MemberInsertServlet extends HttpServlet {
 		
 		int result = new MemberServiceImpl().insertMember(m);
 		
-		/*
-		 * if(result > 0) { response.sendRedirect(request.getAsyncContext()); } else {
-		 * request.setAttribute("errorMsg", ""); }
-		 */
+		if(result > 0) {
+			response.sendRedirect(request.getContextPath());
+		} else {
+			request.setAttribute("errorMsg", "회원가입 실패");
+			request.getRequestDispatcher("WEB-INF/views/common/errorPage.jsp").forward(request, response);
+		}
 	}
 
 }

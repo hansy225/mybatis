@@ -7,11 +7,11 @@ import com.mybatis.member.dao.MemberDao;
 import com.mybatis.member.vo.Member;
 
 public class MemberServiceImpl implements MemberService {
-	SqlSession sqlSession = Template.getSqlSession();
 	private MemberDao mDao = new MemberDao();
 	
 	@Override
 	public Member loginMember(Member m) {
+		SqlSession sqlSession = Template.getSqlSession();
 		Member loginUser = mDao.loginMember(sqlSession, m);
 		sqlSession.close();
 		return loginUser;

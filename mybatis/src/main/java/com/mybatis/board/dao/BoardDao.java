@@ -15,7 +15,7 @@ public class BoardDao {
 	}
 
 	public ArrayList<Board> selectList(SqlSession sqlSession, PageInfo pi) {
-		// 마이바티스에서 페잉징 처리를 위해 RowBounds라는 클래스 제공
+		// 마이바티스에서 페이징 처리를 위해 RowBounds라는 클래스 제공
 		/*
 		 offset : 몇 개의 게시글을 건너뛰고 조회할 것인지에 대한 값
 		 limit : 조회할 숫자
@@ -36,6 +36,7 @@ public class BoardDao {
 		 ArrayList<Board> list = (ArrayList)sqlSession.selectList("boardMapper.selectList", null, rowBounds);
 		 return list;
 		 */
+		
 		return (ArrayList)sqlSession.selectList("boardMapper.selectList", null, rowBounds);
 	}
 
