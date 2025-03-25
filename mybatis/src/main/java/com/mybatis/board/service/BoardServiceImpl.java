@@ -75,7 +75,12 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int replyInsert(Reply r) {
 		SqlSession sqlSession = Template.getSqlSession();
-		
+		int result = bDao.replyInsert(sqlSession, r);
+		if(result > 0) {
+			sqlSession.commit();
+		}
+		sqlSession.close();
+		return result;
 	}
 
 }

@@ -16,6 +16,7 @@ public class ReplyInsertServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BoardService bService = new BoardServiceImpl();
+		
 		Reply r = new Reply();
 		r.setRefBno(Integer.parseInt(request.getParameter("bno")));
 		r.setReplyWriter(request.getParameter("writer"));

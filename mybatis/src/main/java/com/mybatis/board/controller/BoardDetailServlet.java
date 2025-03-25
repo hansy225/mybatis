@@ -1,25 +1,25 @@
-
 package com.mybatis.board.controller;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
 import com.mybatis.board.service.BoardService;
 import com.mybatis.board.service.BoardServiceImpl;
 import com.mybatis.board.vo.Board;
 import com.mybatis.board.vo.Reply;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 public class BoardDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	BoardService bService = new BoardServiceImpl();
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int boardNo = Integer.parseInt(request.getParameter("bno"));
-		BoardService bService = new BoardServiceImpl();
 		
 		// 조회수 증가 시키기
 		int result = bService.increaseCount(boardNo);
@@ -39,6 +39,7 @@ public class BoardDetailServlet extends HttpServlet {
 			request.getRequestDispatcher("WEB-INF/views/common/errorPage.jsp").forward(request, response);
 		}
 	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int boardNo = Integer.parseInt(request.getParameter("bno"));
 		
@@ -46,6 +47,12 @@ public class BoardDetailServlet extends HttpServlet {
 		
 		response.setContentType("application/json");
 		response.getWriter().print(new Gson().toJson(reply));
+		
+		/*
+		Gson gson = new Gson();
+		String json = gson.toJson(gson);
+		response.getWriter().print(json);
+		*/
 	}
 	
 }

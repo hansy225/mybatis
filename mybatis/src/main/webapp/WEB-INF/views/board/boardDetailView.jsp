@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<title>게시판 상세보기</title>
 <style>
 	.outer table {
 		border: 1px solid;
@@ -61,12 +61,11 @@
 				<c:otherwise>
 					<form id="rFrm">
 						<tr>
-							<td>댓글작성</td>
-							<td><textarea rows="3" cols="51" id="content"></textarea></td>
-							<td><input type="button" value="댓글 작성" id="replyInsert"></td>
-							<input type="hidden" name="bno" value="${ b.boardNo }">
-							<input type="hidden" name="writer" value="${ loginUser.uwerId }">
-							
+							<td>댓글 작성</td>
+							<td><textarea rows="3" cols="50" name="content"></textarea></td>
+							<td><input type="button" value="댓글작성" id="replyInsert"></td>
+							<input type="hidden" name="bno" value="${b.boardNo}">
+							<input type="hidden" name="writer" value="${loginUser.userId}">
 						</tr>
 					</form>
 				</c:otherwise>
